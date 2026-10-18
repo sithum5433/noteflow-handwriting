@@ -1,0 +1,905 @@
+.rich-editor,
+.sketch-editor {
+  --editor-ink: var(--text, #27392f);
+  --editor-muted: var(--text-muted, #657163);
+  --editor-border: var(--border, #e5e8df);
+  --editor-accent: var(--accent, #37664c);
+  --editor-soft: var(--accent-soft, #e3ecdd);
+  --editor-surface: var(--surface, #fffefa);
+  color: var(--editor-ink);
+  min-width: 0;
+}
+
+.editor-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-height: 57px;
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--editor-border);
+}
+
+.editor-toolbar .toolbar-button,
+.editor-link-form .toolbar-button,
+.sketch-data-error .toolbar-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 31px;
+  height: 31px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  color: var(--editor-muted);
+  background: transparent;
+  cursor: pointer;
+  transition:
+    background 120ms ease,
+    color 120ms ease;
+}
+
+.editor-toolbar .toolbar-button:hover:not(:disabled),
+.editor-link-form .toolbar-button:hover:not(:disabled) {
+  color: var(--editor-accent);
+  background: var(--editor-soft);
+}
+
+.editor-toolbar .toolbar-button.is-active {
+  color: var(--editor-accent);
+  background: var(--editor-soft);
+}
+
+.editor-toolbar button:disabled,
+.editor-toolbar input:disabled,
+.editor-toolbar select:disabled {
+  opacity: 0.38;
+  cursor: default;
+}
+
+.editor-toolbar button:focus-visible,
+.editor-toolbar select:focus-visible,
+.editor-toolbar input:focus-visible,
+.editor-link-form input:focus-visible,
+.editor-link-form button:focus-visible,
+.sketch-confirm button:focus-visible {
+  outline: 2px solid var(--editor-accent);
+  outline-offset: 3px;
+}
+
+.toolbar-divider {
+  align-self: center;
+  width: 1px;
+  height: 19px;
+  margin: 0 7px;
+  background: var(--editor-border);
+}
+
+.toolbar-spacer {
+  flex: 1;
+}
+
+.editor-format-select {
+  max-width: 118px;
+  padding: 5px 16px 5px 2px;
+  border: 0;
+  border-radius: 5px;
+  font: inherit;
+  font-size: 12px;
+  color: var(--editor-muted);
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.rich-editor .tiptap {
+  min-height: 420px;
+  padding: 29px 39px 65px;
+  outline: 0;
+  color: var(--editor-ink);
+  font-size: 14px;
+  line-height: 1.95;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.rich-editor .tiptap > :first-child {
+  margin-top: 0;
+}
+.rich-editor .tiptap p {
+  margin: 0 0 14px;
+}
+.rich-editor .tiptap h1,
+.rich-editor .tiptap h2,
+.rich-editor .tiptap h3 {
+  margin: 26px 0 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--editor-ink);
+}
+.rich-editor .tiptap h1 {
+  font-size: 29px;
+  letter-spacing: -0.6px;
+}
+.rich-editor .tiptap h2 {
+  font-size: 22px;
+  letter-spacing: -0.35px;
+}
+.rich-editor .tiptap h3 {
+  font-size: 17px;
+}
+.rich-editor .tiptap strong {
+  font-weight: 600;
+}
+.rich-editor .tiptap a {
+  color: var(--editor-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.rich-editor .tiptap ul,
+.rich-editor .tiptap ol {
+  margin: 12px 0 18px;
+  padding-left: 23px;
+}
+.rich-editor .tiptap ul {
+  list-style-type: disc;
+}
+.rich-editor .tiptap ol {
+  list-style-type: decimal;
+}
+.rich-editor .tiptap li {
+  padding-left: 4px;
+  margin-bottom: 6px;
+}
+.rich-editor .tiptap li > p {
+  margin-bottom: 3px;
+}
+.rich-editor .tiptap li::marker {
+  color: var(--muted, #8a9288);
+}
+.rich-editor .tiptap blockquote {
+  margin: 23px 0;
+  border-left: 3px solid var(--editor-soft);
+  padding: 3px 0 3px 19px;
+  color: var(--editor-muted);
+  font-style: italic;
+}
+.rich-editor .tiptap blockquote p:last-child {
+  margin-bottom: 0;
+}
+.rich-editor .tiptap code {
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--editor-soft);
+  color: var(--editor-accent);
+  font-size: 0.88em;
+  font-family: "SFMono-Regular", Consolas, monospace;
+}
+.rich-editor .tiptap pre {
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 22px 0;
+  padding: 18px 22px;
+  border: 1px solid var(--editor-border);
+  border-radius: 9px;
+  background: var(--background, #fbfaf7);
+  white-space: pre;
+  line-height: 1.7;
+}
+.rich-editor .tiptap pre code {
+  padding: 0;
+  color: var(--editor-muted);
+  background: none;
+}
+.rich-editor .tiptap hr {
+  margin: 27px 0;
+  border: 0;
+  border-top: 1px solid var(--editor-border);
+}
+.rich-editor .tiptap p.is-editor-empty:first-child::before {
+  float: left;
+  height: 0;
+  color: var(--muted, #8a9288);
+  content: attr(data-placeholder);
+  pointer-events: none;
+}
+.rich-editor .tiptap ul[data-type="taskList"] {
+  padding-left: 0;
+  list-style: none;
+}
+.rich-editor .tiptap ul[data-type="taskList"] li {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding-left: 0;
+}
+.rich-editor .tiptap ul[data-type="taskList"] li > label {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  margin-top: 7px;
+  user-select: none;
+}
+.rich-editor .tiptap ul[data-type="taskList"] input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  accent-color: var(--editor-accent);
+  cursor: pointer;
+}
+.rich-editor .tiptap ul[data-type="taskList"] li > div {
+  flex: 1;
+  min-width: 0;
+}
+.rich-editor
+  .tiptap
+  ul[data-type="taskList"]
+  li[data-checked="true"]
+  > div
+  > p {
+  color: var(--muted, #8a9288);
+  text-decoration: line-through;
+}
+.rich-editor.is-readonly .tiptap input[type="checkbox"] {
+  pointer-events: none;
+}
+.editor-loading {
+  padding: 40px;
+  color: var(--editor-muted);
+}
+
+.editor-link-form {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 22px;
+  border-bottom: 1px solid var(--editor-border);
+  background: var(--background, #fbfaf7);
+}
+.editor-link-label {
+  color: var(--editor-muted);
+  font-size: 12px;
+}
+.editor-link-form input {
+  flex: 1;
+  min-width: 150px;
+  padding: 7px 10px;
+  border: 1px solid var(--editor-border);
+  border-radius: 6px;
+  font: inherit;
+  font-size: 12px;
+  color: var(--editor-ink);
+  background: var(--editor-surface);
+}
+.editor-small-button {
+  flex-shrink: 0;
+  padding: 7px 12px;
+  border: 1px solid var(--editor-border);
+  border-radius: 6px;
+  font: inherit;
+  font-size: 12px;
+  color: var(--editor-muted);
+  background: var(--editor-surface);
+  cursor: pointer;
+}
+.editor-primary-button {
+  color: #fff;
+  border-color: var(--editor-accent);
+  background: var(--editor-accent);
+}
+.editor-danger-button {
+  color: #b45158;
+  border-color: #f0d7d9;
+  background: #fff4f4;
+}
+.editor-form-error {
+  flex-basis: 100%;
+  font-size: 11px;
+  color: #b45158;
+}
+
+.sketch-colors {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 4px;
+}
+.sketch-colors .sketch-color {
+  flex: 0 0 auto;
+  width: 17px;
+  height: 17px;
+  padding: 0;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: var(--swatch);
+  outline: 1px solid transparent;
+  cursor: pointer;
+}
+.sketch-colors .sketch-color.is-selected {
+  outline-color: var(--swatch);
+}
+.sketch-custom-color {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 19px;
+  height: 19px;
+  border: 1px solid #ddd8e7;
+  border-radius: 50%;
+  color: #a19aa9;
+  cursor: pointer;
+}
+.sketch-custom-color input {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.sketch-custom-color:focus-within {
+  outline: 2px solid var(--editor-accent);
+  outline-offset: 3px;
+}
+.sketch-custom-color span {
+  font-size: 14px;
+  line-height: 1;
+  pointer-events: none;
+}
+.sketch-size-label {
+  margin-left: 3px;
+  color: var(--editor-muted);
+  font-size: 11px;
+}
+.sketch-size {
+  width: 64px;
+  height: 4px;
+  margin: 0 4px;
+  accent-color: var(--editor-accent);
+  cursor: pointer;
+}
+.sketch-size-value {
+  width: 16px;
+  color: var(--muted, #8a9288);
+  font-size: 10px;
+}
+.sketch-surface {
+  position: relative;
+  margin: 22px 30px 13px;
+  overflow: hidden;
+  border: 1px solid var(--editor-border);
+  border-radius: 9px;
+  background: #fff;
+  cursor: crosshair;
+}
+.sketch-surface.is-erasing {
+  cursor: cell;
+}
+.sketch-editor.is-readonly .sketch-surface {
+  cursor: default;
+}
+.sketch-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  touch-action: none;
+}
+.sketch-canvas:focus-visible {
+  outline: 2px solid var(--editor-accent);
+  outline-offset: -3px;
+}
+.sketch-canvas:focus:not(:focus-visible) {
+  outline: none;
+}
+.sketch-editor.is-readonly .sketch-canvas {
+  touch-action: auto;
+}
+.sketch-empty {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-direction: column;
+  width: 80%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  color: #9aab94;
+  text-align: center;
+}
+.sketch-empty > svg {
+  opacity: 0.7;
+  margin-bottom: 5px;
+}
+.sketch-empty > span {
+  color: #8e9d89;
+  font-size: 14px;
+}
+.sketch-empty > small {
+  color: #a8b0a3;
+  font-size: 11px;
+}
+.sketch-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 32px 20px;
+  color: var(--muted, #8a9288);
+  font-size: 10px;
+}
+.sketch-confirm {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 12px 22px;
+  border-bottom: 1px solid #eee3df;
+  color: #8c6a63;
+  background: #fff9f6;
+  font-size: 12px;
+}
+.sketch-confirm > span {
+  flex: 1;
+  min-width: 180px;
+}
+.sketch-data-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin: 15px 25px;
+  padding: 12px 15px;
+  border-radius: 7px;
+  color: #a26760;
+  background: #fff1ed;
+  font-size: 12px;
+}
+
+:root[data-theme="dark"] .sketch-confirm {
+  color: #ddbdab;
+  border-color: #493932;
+  background: #332924;
+}
+:root[data-theme="dark"] .editor-danger-button {
+  color: #e9a7ac;
+  border-color: #754b50;
+  background: #483034;
+}
+:root[data-theme="dark"] .sketch-data-error {
+  color: #e6b1a5;
+  background: #48322e;
+}
+:root[data-theme="dark"] .sketch-colors .sketch-color {
+  border-color: var(--editor-surface);
+}
+:root[data-theme="dark"] .sketch-custom-color {
+  border-color: var(--editor-border);
+}
+
+@media (max-width: 1000px) {
+  .editor-toolbar {
+    padding-left: 15px;
+    padding-right: 15px;
+    gap: 3px;
+  }
+  .toolbar-divider {
+    margin: 0 4px;
+  }
+  .sketch-colors {
+    gap: 5px;
+  }
+  .sketch-size {
+    width: 48px;
+  }
+}
+
+@media (max-width: 600px) {
+  .editor-toolbar {
+    padding: 9px 10px;
+    gap: 2px;
+  }
+  .editor-toolbar .toolbar-button {
+    width: 30px;
+    height: 33px;
+  }
+  .editor-format-select {
+    max-width: 105px;
+    font-size: 11px;
+  }
+  .toolbar-divider {
+    margin: 0 3px;
+  }
+  .toolbar-spacer {
+    min-width: 4px;
+  }
+  .rich-editor .tiptap {
+    min-height: 390px;
+    padding: 24px 22px 50px;
+    font-size: 14px;
+  }
+  .rich-editor .tiptap h1 {
+    font-size: 25px;
+  }
+  .rich-editor .tiptap h2 {
+    font-size: 20px;
+  }
+  .editor-link-form {
+    padding: 12px 15px;
+  }
+  .sketch-toolbar {
+    row-gap: 10px;
+  }
+  .sketch-colors {
+    gap: 8px;
+  }
+  .sketch-colors .sketch-color {
+    width: 18px;
+    height: 18px;
+  }
+  .sketch-size-label {
+    margin-left: 0;
+  }
+  .sketch-surface {
+    margin: 17px 14px 12px;
+  }
+  .sketch-caption {
+    margin: 0 16px 18px;
+    font-size: 9px;
+  }
+  .sketch-empty > span {
+    font-size: 11px;
+  }
+  .sketch-empty > small {
+    font-size: 10px;
+  }
+  .sketch-empty > svg {
+    width: 22px;
+    height: 22px;
+    margin-bottom: 0;
+  }
+}
+
+/* Keep handwriting tools within reach while the paper scrolls beneath them. */
+.handwriting-controls {
+  position: sticky;
+  top: 0;
+  z-index: 15;
+  padding-bottom: 9px;
+  border-bottom: 1px solid var(--editor-border);
+  background: var(--background, #fbfaf7);
+}
+.sketch-editor .sketch-toolbar {
+  gap: 4px;
+  min-height: 57px;
+  padding-top: 8px;
+  padding-bottom: 7px;
+  border-bottom: 0;
+}
+.sketch-toolbar .toolbar-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 7px;
+}
+.sketch-toolbar .toolbar-button > svg {
+  width: 18px;
+  height: 18px;
+}
+.sketch-toolbar .handwriting-tool {
+  order: 0;
+  gap: 6px;
+  width: auto;
+  min-width: 63px;
+  padding: 0 11px;
+  font-size: 11px;
+  font-weight: 550;
+}
+.sketch-toolbar > button[aria-label^="Undo"],
+.sketch-toolbar > button[aria-label^="Redo"] {
+  order: 1;
+}
+.sketch-toolbar > .toolbar-divider,
+.sketch-toolbar > .toolbar-spacer {
+  display: none;
+}
+.sketch-toolbar .sketch-colors {
+  order: 2;
+  gap: 1px;
+  margin: 0 7px;
+  padding-left: 8px;
+  border-left: 1px solid var(--editor-border);
+}
+.sketch-toolbar .sketch-colors .sketch-color {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 5px;
+  outline: 0;
+  background: transparent;
+}
+.sketch-toolbar .sketch-colors .sketch-color::before {
+  position: absolute;
+  top: 11px;
+  left: 11px;
+  width: 18px;
+  height: 18px;
+  border: 3px solid var(--editor-surface);
+  border-radius: 50%;
+  background: var(--swatch);
+  box-shadow: 0 0 0 1px transparent;
+  content: "";
+}
+.sketch-toolbar .sketch-colors .sketch-color:hover {
+  background: var(--editor-soft);
+}
+.sketch-toolbar .sketch-colors .sketch-color.is-selected::before {
+  box-shadow: 0 0 0 1.5px var(--editor-accent);
+}
+.sketch-toolbar .sketch-colors .sketch-color:focus-visible {
+  outline: 2px solid var(--editor-accent);
+  outline-offset: -2px;
+}
+.sketch-toolbar .sketch-custom-color {
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 5px;
+  color: var(--editor-muted);
+}
+.sketch-toolbar .sketch-custom-color:hover {
+  background: var(--editor-soft);
+}
+.sketch-toolbar .sketch-custom-color span {
+  font-size: 21px;
+  font-weight: 300;
+}
+.sketch-toolbar .sketch-size-label,
+.sketch-toolbar .sketch-size,
+.sketch-toolbar .sketch-size-value {
+  order: 3;
+}
+.sketch-toolbar .sketch-size-label {
+  margin-left: 0;
+  font-size: 10px;
+}
+.sketch-toolbar .sketch-size {
+  width: 59px;
+  height: 24px;
+  margin: 0 1px;
+}
+.sketch-toolbar .sketch-size-value {
+  width: 18px;
+  font-size: 10px;
+}
+.sketch-toolbar > button[aria-label^="Download"],
+.sketch-toolbar > button[aria-label^="Clear"] {
+  order: 4;
+}
+.handwriting-settings {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 15px;
+  min-height: 39px;
+  color: var(--editor-muted);
+}
+.handwriting-settings > label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 40px;
+  font-size: 10px;
+  white-space: nowrap;
+}
+.handwriting-settings select {
+  min-height: 40px;
+  max-width: 162px;
+  padding: 6px 21px 6px 8px;
+  border: 1px solid var(--editor-border);
+  border-radius: 6px;
+  background-color: var(--editor-surface);
+  color: var(--editor-ink);
+  font-size: 10px;
+  cursor: pointer;
+}
+.handwriting-settings select:focus-visible {
+  outline: 2px solid var(--editor-accent);
+  outline-offset: 2px;
+}
+.handwriting-settings option {
+  background: var(--editor-surface);
+  color: var(--editor-ink);
+}
+.handwriting-mode-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: auto;
+  font-size: 9px;
+  line-height: 1.5;
+}
+.handwriting-mode-hint svg {
+  width: 13px;
+  height: 13px;
+  color: var(--editor-accent);
+}
+.sketch-editor .sketch-surface {
+  margin-top: 17px;
+  margin-bottom: 12px;
+  border-color: #dedfd4;
+  border-radius: 4px;
+  background: #fffdf7;
+  box-shadow: 0 2px 7px #293e2a06;
+}
+.sketch-editor .sketch-empty {
+  top: 119px;
+  gap: 9px;
+  transform: translateX(-50%);
+  color: #829575;
+}
+.sketch-editor .sketch-empty > svg {
+  width: 25px;
+  height: 25px;
+  margin: 0;
+}
+.sketch-editor .sketch-empty > span {
+  color: #829575;
+  font-size: 13px;
+}
+.sketch-editor .sketch-empty > small {
+  max-width: 270px;
+  color: #95a18c;
+  font-size: 10px;
+  line-height: 1.8;
+}
+.handwriting-add-space {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  min-height: 42px;
+  margin: 0 0 15px;
+  padding: 9px 15px;
+  border: 1px dashed var(--editor-border);
+  border-radius: 5px;
+  background: transparent;
+  color: var(--editor-muted);
+  font-size: 11px;
+}
+.handwriting-add-space:hover:not(:disabled) {
+  border-color: var(--editor-accent);
+  background: var(--editor-soft);
+  color: var(--editor-accent);
+}
+.handwriting-add-space svg {
+  width: 15px;
+  height: 15px;
+}
+.sketch-editor .sketch-caption {
+  align-items: flex-start;
+  line-height: 1.7;
+}
+:root[data-theme="dark"] .sketch-editor .sketch-surface {
+  border-color: #5c6554;
+  box-shadow: 0 2px 8px #0002;
+}
+
+@media (max-width: 1100px) {
+  .handwriting-mode-hint {
+    width: 100%;
+    margin-left: 0;
+    padding: 1px 0 4px;
+  }
+}
+@media (max-width: 760px) {
+  .handwriting-controls {
+    padding-bottom: 6px;
+  }
+  .sketch-editor .sketch-toolbar {
+    flex-wrap: nowrap;
+    gap: 4px;
+    min-height: 57px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x;
+  }
+  .sketch-toolbar > * {
+    flex-shrink: 0;
+  }
+  .sketch-toolbar .handwriting-tool {
+    min-width: 61px;
+    padding-right: 9px;
+    padding-left: 9px;
+    font-size: 10px;
+  }
+  .sketch-toolbar .sketch-colors {
+    margin-right: 5px;
+    margin-left: 3px;
+  }
+  .sketch-toolbar .sketch-size {
+    width: 54px;
+  }
+  .handwriting-settings {
+    gap: 3px 11px;
+  }
+  .handwriting-settings > label {
+    gap: 5px;
+    font-size: 9px;
+  }
+  .handwriting-settings select {
+    min-height: 40px;
+    max-width: 142px;
+    padding-right: 19px;
+    padding-left: 6px;
+    font-size: 10px;
+  }
+  .handwriting-mode-hint {
+    padding-top: 3px;
+    padding-bottom: 2px;
+    font-size: 9px;
+  }
+  .sketch-editor .sketch-surface {
+    margin-top: 13px;
+  }
+  .sketch-editor .sketch-empty {
+    top: 87px;
+    gap: 6px;
+  }
+  .sketch-editor .sketch-empty > span {
+    font-size: 12px;
+  }
+  .sketch-editor .sketch-empty > small {
+    max-width: 220px;
+    font-size: 9px;
+  }
+  .sketch-editor .sketch-caption {
+    flex-wrap: wrap;
+    gap: 3px 10px;
+  }
+  .sketch-editor .sketch-caption > span:first-child {
+    flex: 1;
+    min-width: 190px;
+  }
+}
+@media (max-width: 360px) {
+  .handwriting-settings {
+    gap: 3px 8px;
+  }
+  .handwriting-settings > label {
+    gap: 4px;
+  }
+  .handwriting-settings select {
+    max-width: 124px;
+    padding-right: 15px;
+    font-size: 9px;
+  }
+}
+
+@media print {
+  .editor-toolbar,
+  .editor-link-form,
+  .sketch-confirm,
+  .sketch-caption {
+    display: none !important;
+  }
+  .handwriting-controls,
+  .handwriting-add-space {
+    display: none !important;
+  }
+  .rich-editor .tiptap {
+    min-height: 0;
+    padding: 0;
+  }
+  .sketch-surface {
+    margin: 0;
+    border: 0;
+  }
+}
