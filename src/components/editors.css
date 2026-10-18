@@ -563,65 +563,176 @@
   }
 }
 
-/* Keep handwriting tools within reach while the paper scrolls beneath them. */
+/* Group writing tools separately from pen settings and page navigation. */
+.handwriting-editor {
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  height: 0;
+  min-height: 0;
+  container: ink-editor / inline-size;
+}
 .handwriting-controls {
-  position: sticky;
-  top: 0;
+  position: relative;
   z-index: 15;
-  padding-bottom: 9px;
-  border-bottom: 1px solid var(--editor-border);
+  flex: 0 0 auto;
+  padding: 0 0 9px;
   background: var(--background, #fbfaf7);
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
-.sketch-editor .sketch-toolbar {
-  gap: 4px;
+.handwriting-controls
+  input:not([type="range"]):not([type="color"]):not([type="checkbox"]) {
+  user-select: text;
+  -webkit-user-select: text;
+  -webkit-touch-callout: default;
+}
+.handwriting-editor .handwriting-toolbar-row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
   min-height: 57px;
-  padding-top: 8px;
-  padding-bottom: 7px;
-  border-bottom: 0;
+  padding: 7px 0;
+  overflow: visible;
+  border-bottom: 1px solid var(--editor-border);
 }
-.sketch-toolbar .toolbar-button {
+.handwriting-tools {
+  display: grid;
+  grid-template-columns: repeat(6, max-content);
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+.handwriting-tools .handwriting-tool,
+.handwriting-page-actions .toolbar-button,
+.handwriting-tool-settings .toolbar-button,
+.handwriting-zoom-controls .toolbar-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  min-width: 40px;
   width: 40px;
-  height: 40px;
-  border-radius: 7px;
+  height: 42px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  color: var(--editor-muted);
+  background: transparent;
 }
-.sketch-toolbar .toolbar-button > svg {
-  width: 18px;
-  height: 18px;
-}
-.sketch-toolbar .handwriting-tool {
-  order: 0;
+.handwriting-tools .handwriting-tool {
   gap: 6px;
   width: auto;
-  min-width: 63px;
-  padding: 0 11px;
+  min-width: 62px;
+  padding: 0 10px;
   font-size: 11px;
   font-weight: 550;
 }
-.sketch-toolbar > button[aria-label^="Undo"],
-.sketch-toolbar > button[aria-label^="Redo"] {
-  order: 1;
+.handwriting-tools .handwriting-tool > svg,
+.handwriting-page-actions .toolbar-button > svg,
+.handwriting-tool-settings .toolbar-button > svg,
+.handwriting-zoom-controls .toolbar-button > svg {
+  width: 18px;
+  height: 18px;
 }
-.sketch-toolbar > .toolbar-divider,
-.sketch-toolbar > .toolbar-spacer {
-  display: none;
+.handwriting-controls .toolbar-button:hover:not(:disabled) {
+  color: var(--editor-accent);
+  background: var(--editor-soft);
 }
-.sketch-toolbar .sketch-colors {
-  order: 2;
-  gap: 1px;
-  margin: 0 7px;
-  padding-left: 8px;
+.handwriting-controls .toolbar-button.is-active {
+  color: var(--editor-accent);
+  background: var(--editor-soft);
+}
+.handwriting-controls button:disabled,
+.handwriting-controls select:disabled,
+.handwriting-controls input:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+.handwriting-controls button:focus-visible,
+.handwriting-controls input:focus-visible,
+.handwriting-controls select:focus-visible,
+.handwriting-controls summary:focus-visible {
+  outline: 2px solid var(--editor-accent);
+  outline-offset: 2px;
+}
+.handwriting-page-actions {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 2px;
+  padding-left: 9px;
   border-left: 1px solid var(--editor-border);
 }
-.sketch-toolbar .sketch-colors .sketch-color {
+.handwriting-tool-settings {
   position: relative;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px 10px;
+  min-height: 49px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--editor-border);
+}
+.handwriting-width-controls {
+  display: flex;
+  align-items: center;
+  flex: 1 1 290px;
+  gap: 4px;
+  min-width: 0;
+  max-width: 400px;
+}
+.handwriting-width-controls > label,
+.handwriting-size-label {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 7px;
+  color: var(--editor-muted);
+  font-size: 10px;
+  white-space: nowrap;
+}
+.handwriting-size-number {
+  width: 54px;
+  height: 40px;
+  padding: 6px 4px 6px 8px;
+  border: 1px solid var(--editor-border);
+  border-radius: 5px;
+  color: var(--editor-ink);
+  background: var(--editor-surface);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.handwriting-width-controls .sketch-size {
+  flex: 1 1 auto;
+  min-width: 35px;
+  width: 90px;
+  max-width: 125px;
+  height: 40px;
+  margin: 0 3px;
+  accent-color: var(--editor-accent);
+}
+.handwriting-tool-settings .sketch-colors {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin: 0;
+}
+.handwriting-tool-settings .sketch-color {
+  position: relative;
+  flex: 0 0 40px;
   width: 40px;
   height: 40px;
+  padding: 0;
   border: 0;
   border-radius: 5px;
   outline: 0;
   background: transparent;
 }
-.sketch-toolbar .sketch-colors .sketch-color::before {
+.handwriting-tool-settings .sketch-color::before {
   position: absolute;
   top: 11px;
   left: 11px;
@@ -633,124 +744,270 @@
   box-shadow: 0 0 0 1px transparent;
   content: "";
 }
-.sketch-toolbar .sketch-colors .sketch-color:hover {
+.handwriting-tool-settings .sketch-color:hover {
   background: var(--editor-soft);
 }
-.sketch-toolbar .sketch-colors .sketch-color.is-selected::before {
+.handwriting-tool-settings .sketch-color.is-selected::before {
   box-shadow: 0 0 0 1.5px var(--editor-accent);
 }
-.sketch-toolbar .sketch-colors .sketch-color:focus-visible {
-  outline: 2px solid var(--editor-accent);
-  outline-offset: -2px;
-}
-.sketch-toolbar .sketch-custom-color {
+.handwriting-tool-settings .sketch-custom-color {
   width: 40px;
   height: 40px;
   border: 0;
   border-radius: 5px;
   color: var(--editor-muted);
 }
-.sketch-toolbar .sketch-custom-color:hover {
+.handwriting-tool-settings .sketch-custom-color:hover {
   background: var(--editor-soft);
 }
-.sketch-toolbar .sketch-custom-color span {
-  font-size: 21px;
+.handwriting-tool-settings .sketch-custom-color span {
+  font-size: 20px;
   font-weight: 300;
 }
-.sketch-toolbar .sketch-size-label,
-.sketch-toolbar .sketch-size,
-.sketch-toolbar .sketch-size-value {
-  order: 3;
-}
-.sketch-toolbar .sketch-size-label {
-  margin-left: 0;
-  font-size: 10px;
-}
-.sketch-toolbar .sketch-size {
-  width: 59px;
-  height: 24px;
-  margin: 0 1px;
-}
-.sketch-toolbar .sketch-size-value {
-  width: 18px;
-  font-size: 10px;
-}
-.sketch-toolbar > button[aria-label^="Download"],
-.sketch-toolbar > button[aria-label^="Clear"] {
-  order: 4;
-}
-.handwriting-settings {
-  display: flex;
+.handwriting-pressure-toggle {
+  display: inline-flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 4px 15px;
-  min-height: 39px;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 5px;
   color: var(--editor-muted);
+  font-size: 10px;
+  white-space: nowrap;
 }
-.handwriting-settings > label {
+.handwriting-pressure-toggle input {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  accent-color: var(--editor-accent);
+}
+.handwriting-eraser-setting {
   display: inline-flex;
   align-items: center;
   gap: 7px;
   min-height: 40px;
+  color: var(--editor-muted);
   font-size: 10px;
-  white-space: nowrap;
 }
-.handwriting-settings select {
+.handwriting-settings select,
+.handwriting-eraser-mode {
   min-height: 40px;
-  max-width: 162px;
+  max-width: 164px;
   padding: 6px 21px 6px 8px;
   border: 1px solid var(--editor-border);
-  border-radius: 6px;
+  border-radius: 5px;
   background-color: var(--editor-surface);
   color: var(--editor-ink);
   font-size: 10px;
   cursor: pointer;
 }
-.handwriting-settings select:focus-visible {
-  outline: 2px solid var(--editor-accent);
-  outline-offset: 2px;
-}
-.handwriting-settings option {
+.handwriting-settings option,
+.handwriting-eraser-mode option {
   background: var(--editor-surface);
   color: var(--editor-ink);
+}
+.handwriting-settings {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px 11px;
+  min-height: 48px;
+  padding: 5px 0 0;
+  color: var(--editor-muted);
+}
+.handwriting-settings > label,
+.handwriting-options-popover > label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  color: var(--editor-muted);
+  font-size: 10px;
+  white-space: nowrap;
+}
+.handwriting-zoom-controls {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 1px;
+  margin-left: 0;
+}
+.handwriting-fit-width {
+  gap: 2px;
+}
+.handwriting-pan-hint {
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  color: var(--editor-muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+.handwriting-zoom-controls > button {
+  min-height: 40px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 5px;
+  color: var(--editor-muted);
+  background: transparent;
+  font-size: 10px;
+  white-space: nowrap;
+}
+.handwriting-zoom-controls > button:hover:not(:disabled) {
+  background: var(--editor-soft);
+  color: var(--editor-accent);
+}
+.handwriting-zoom-controls > button[aria-label*="zoom" i] {
+  min-width: 40px;
+}
+.handwriting-zoom-controls > button[aria-label*="reset" i] {
+  min-width: 56px;
+  border: 1px solid var(--editor-border);
+  background: var(--editor-surface);
+  color: var(--editor-ink);
+  font-variant-numeric: tabular-nums;
 }
 .handwriting-mode-hint {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  margin-left: auto;
+  color: var(--muted, #8a9288);
   font-size: 9px;
   line-height: 1.5;
 }
-.handwriting-mode-hint svg {
+.handwriting-mode-hint > svg {
   width: 13px;
   height: 13px;
   color: var(--editor-accent);
 }
-.sketch-editor .sketch-surface {
-  margin-top: 17px;
-  margin-bottom: 12px;
-  border-color: #dedfd4;
-  border-radius: 4px;
-  background: #fffdf7;
-  box-shadow: 0 2px 7px #293e2a06;
+.handwriting-color-picker,
+.handwriting-page-options {
+  position: relative;
 }
-.sketch-editor .sketch-empty {
-  top: 119px;
+.handwriting-color-picker > summary,
+.handwriting-page-options > summary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 6px 10px;
+  border: 1px solid var(--editor-border);
+  border-radius: 5px;
+  color: var(--editor-muted);
+  background: var(--editor-surface);
+  font-size: 10px;
+  cursor: pointer;
+  list-style: none;
+}
+.handwriting-color-picker > summary::-webkit-details-marker,
+.handwriting-page-options > summary::-webkit-details-marker {
+  display: none;
+}
+.handwriting-color-picker[open] > summary,
+.handwriting-page-options[open] > summary {
+  border-color: var(--editor-accent);
+  color: var(--editor-accent);
+  background: var(--editor-soft);
+}
+.handwriting-color-picker > summary > span:first-child {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--swatch);
+}
+.handwriting-color-options,
+.handwriting-options-popover {
+  position: absolute;
+  top: calc(100% + 7px);
+  right: 0;
+  z-index: 45;
+  padding: 10px;
+  border: 1px solid var(--editor-border);
+  border-radius: 8px;
+  background: var(--editor-surface);
+  box-shadow: var(--shadow);
+}
+.handwriting-color-options {
+  min-width: 302px;
+}
+.handwriting-options-popover {
+  display: flex;
+  flex-wrap: wrap;
   gap: 9px;
+  width: 270px;
+}
+.handwriting-options-popover > label {
+  justify-content: space-between;
+  width: 100%;
+}
+.handwriting-options-popover .handwriting-mode-hint {
+  width: 100%;
+  padding-top: 4px;
+}
+.handwriting-viewport {
+  position: relative;
+  flex: 1 1 0%;
+  height: 0;
+  min-width: 0;
+  min-height: 160px;
+  max-height: none;
+  padding: 16px;
+  overflow: auto;
+  border: 1px solid var(--editor-border);
+  border-radius: 6px;
+  background: var(--panel, #f7f7f1);
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+.handwriting-page-stage {
+  position: relative;
+  max-width: none;
+  margin: 0 auto;
+}
+.handwriting-page-stage .sketch-surface {
+  width: 100%;
+  margin: 0;
+  border: 1px solid #dedfd4;
+  border-radius: 3px;
+  background: #fffdf7;
+  box-shadow: 0 2px 7px #293e2a08;
+}
+.handwriting-page-stage .sketch-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+.handwriting-viewport.is-pan-tool,
+.handwriting-viewport.is-pan-tool .sketch-canvas {
+  cursor: grab;
+}
+.handwriting-viewport.is-panning,
+.handwriting-viewport.is-panning .sketch-canvas {
+  cursor: grabbing;
+}
+.handwriting-page-stage .sketch-empty {
+  top: 100px;
+  gap: 8px;
   transform: translateX(-50%);
   color: #829575;
 }
-.sketch-editor .sketch-empty > svg {
+.handwriting-page-stage .sketch-empty > svg {
   width: 25px;
   height: 25px;
   margin: 0;
 }
-.sketch-editor .sketch-empty > span {
+.handwriting-page-stage .sketch-empty > span {
   color: #829575;
   font-size: 13px;
 }
-.sketch-editor .sketch-empty > small {
+.handwriting-page-stage .sketch-empty > small {
   max-width: 270px;
   color: #95a18c;
   font-size: 10px;
@@ -760,130 +1017,242 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 0 0 auto;
   gap: 7px;
   width: 100%;
-  min-height: 42px;
-  margin: 0 0 15px;
-  padding: 9px 15px;
+  min-height: 40px;
+  margin: 8px 0 0;
+  padding: 8px 12px;
   border: 1px dashed var(--editor-border);
   border-radius: 5px;
   background: transparent;
   color: var(--editor-muted);
-  font-size: 11px;
+  font-size: 10px;
 }
 .handwriting-add-space:hover:not(:disabled) {
   border-color: var(--editor-accent);
   background: var(--editor-soft);
   color: var(--editor-accent);
 }
-.handwriting-add-space svg {
+.handwriting-add-space > svg {
   width: 15px;
   height: 15px;
 }
-.sketch-editor .sketch-caption {
+.handwriting-editor > .sketch-caption {
   align-items: flex-start;
+  flex-shrink: 0;
+  gap: 10px;
+  margin: 6px 0 7px;
+  font-size: 9px;
   line-height: 1.7;
 }
-:root[data-theme="dark"] .sketch-editor .sketch-surface {
+:root[data-theme="dark"] .handwriting-page-stage .sketch-surface {
   border-color: #5c6554;
   box-shadow: 0 2px 8px #0002;
 }
-
-@media (max-width: 1100px) {
-  .handwriting-mode-hint {
+@container ink-editor (max-width: 750px) {
+  .handwriting-tools {
+    flex: 1 1 auto;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  .handwriting-tools .handwriting-tool {
+    flex-direction: column;
+    gap: 3px;
     width: 100%;
+    min-width: 0;
+    height: 46px;
+    padding: 4px 2px;
+    font-size: 9px;
+    line-height: 1.2;
+  }
+  .handwriting-page-actions {
+    padding-left: 5px;
+  }
+  .handwriting-view-settings {
+    gap: 5px 9px;
+  }
+  .handwriting-zoom-controls {
+    order: -1;
     margin-left: 0;
-    padding: 1px 0 4px;
+  }
+  .handwriting-mode-hint {
+    font-size: 8px;
   }
 }
-@media (max-width: 760px) {
-  .handwriting-controls {
-    padding-bottom: 6px;
+@container ink-editor (max-width: 500px) {
+  .handwriting-tool-settings {
+    gap: 4px 7px;
   }
-  .sketch-editor .sketch-toolbar {
-    flex-wrap: nowrap;
-    gap: 4px;
-    min-height: 57px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    overflow-x: auto;
-    scrollbar-width: thin;
-    overscroll-behavior-x: contain;
-    touch-action: pan-x;
+  .handwriting-width-controls {
+    flex-basis: 200px;
+    min-width: 200px;
+    max-width: none;
   }
-  .sketch-toolbar > * {
-    flex-shrink: 0;
-  }
-  .sketch-toolbar .handwriting-tool {
-    min-width: 61px;
-    padding-right: 9px;
-    padding-left: 9px;
-    font-size: 10px;
-  }
-  .sketch-toolbar .sketch-colors {
-    margin-right: 5px;
-    margin-left: 3px;
-  }
-  .sketch-toolbar .sketch-size {
-    width: 54px;
-  }
-  .handwriting-settings {
-    gap: 3px 11px;
-  }
-  .handwriting-settings > label {
+  .handwriting-width-controls > label,
+  .handwriting-size-label {
     gap: 5px;
     font-size: 9px;
   }
-  .handwriting-settings select {
-    min-height: 40px;
-    max-width: 142px;
-    padding-right: 19px;
-    padding-left: 6px;
+  .handwriting-size-number {
+    width: 43px;
+    padding-left: 5px;
     font-size: 10px;
   }
-  .handwriting-mode-hint {
-    padding-top: 3px;
-    padding-bottom: 2px;
+  .handwriting-width-controls .sketch-size {
+    min-width: 30px;
+    max-width: none;
+    margin: 0 1px;
+  }
+  .handwriting-tool-settings .sketch-colors {
+    gap: 0;
+  }
+  .handwriting-color-picker {
+    position: static;
+  }
+  .handwriting-color-options {
+    right: auto;
+    left: 0;
+    width: min(302px, 100%);
+    min-width: 0;
+    padding: 6px;
+  }
+  .handwriting-pressure-toggle {
+    min-height: 40px;
+    padding-left: 0;
     font-size: 9px;
   }
-  .sketch-editor .sketch-surface {
-    margin-top: 13px;
-  }
-  .sketch-editor .sketch-empty {
-    top: 87px;
-    gap: 6px;
-  }
-  .sketch-editor .sketch-empty > span {
-    font-size: 12px;
-  }
-  .sketch-editor .sketch-empty > small {
-    max-width: 220px;
-    font-size: 9px;
-  }
-  .sketch-editor .sketch-caption {
-    flex-wrap: wrap;
-    gap: 3px 10px;
-  }
-  .sketch-editor .sketch-caption > span:first-child {
-    flex: 1;
-    min-width: 190px;
-  }
-}
-@media (max-width: 360px) {
   .handwriting-settings {
-    gap: 3px 8px;
+    gap: 4px 7px;
+  }
+  .handwriting-view-settings {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .handwriting-view-settings > label:nth-of-type(1) {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .handwriting-view-settings > label:nth-of-type(2) {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .handwriting-view-settings > .handwriting-mode-hint {
+    grid-column: 2;
+    grid-row: 1;
+    justify-content: flex-end;
+    min-width: 0;
+    margin: 0;
   }
   .handwriting-settings > label {
     gap: 4px;
+    font-size: 9px;
   }
   .handwriting-settings select {
-    max-width: 124px;
-    padding-right: 15px;
+    max-width: 142px;
+    padding-right: 18px;
+    padding-left: 6px;
     font-size: 9px;
+  }
+  .handwriting-zoom-controls {
+    grid-column: 1;
+    grid-row: 1;
+    flex: 1 1 auto;
+    gap: 1px;
+  }
+  .handwriting-zoom-controls > button {
+    padding-right: 7px;
+    padding-left: 7px;
+    font-size: 9px;
+  }
+  .handwriting-zoom-controls > button[aria-label*="reset" i] {
+    min-width: 52px;
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .handwriting-viewport {
+    padding: 16px;
+    min-height: 120px;
+  }
+  .handwriting-page-stage .sketch-empty {
+    top: 70px;
+    gap: 6px;
+  }
+  .handwriting-page-stage .sketch-empty > span {
+    font-size: 11px;
+  }
+  .handwriting-page-stage .sketch-empty > small {
+    max-width: 210px;
+    font-size: 9px;
+  }
+  .handwriting-editor > .sketch-caption {
+    flex-wrap: wrap;
+    gap: 2px 8px;
+    margin-bottom: 4px;
+    font-size: 8px;
+  }
+}
+@container ink-editor (max-width: 340px) {
+  .handwriting-editor .handwriting-toolbar-row {
+    flex-wrap: wrap;
+    gap: 2px;
+  }
+  .handwriting-tools {
+    flex-basis: 100%;
+    width: 100%;
+  }
+  .handwriting-page-actions {
+    justify-content: flex-end;
+    width: 100%;
+    padding-left: 0;
+    border-left: 0;
+  }
+  .handwriting-page-actions .toolbar-button {
+    height: 40px;
+  }
+  .handwriting-settings select {
+    max-width: 128px;
+  }
+  .handwriting-view-settings {
+    grid-template-columns: 1fr 1fr;
+  }
+  .handwriting-zoom-controls {
+    grid-column: 1 / -1;
+  }
+  .handwriting-view-settings > .handwriting-mode-hint {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    justify-content: flex-start;
+  }
+  .handwriting-view-settings select {
+    max-width: 108px;
+  }
+  .handwriting-color-options {
+    min-width: 282px;
+    padding: 5px 0;
   }
 }
 
 @media print {
+  .handwriting-editor {
+    display: block !important;
+    height: auto !important;
+  }
+  .handwriting-viewport {
+    display: block !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    border: 0;
+    background: transparent;
+  }
+  .handwriting-page-stage {
+    width: 100% !important;
+  }
+  .sketch-canvas [data-export-ignore] {
+    display: none;
+  }
   .editor-toolbar,
   .editor-link-form,
   .sketch-confirm,

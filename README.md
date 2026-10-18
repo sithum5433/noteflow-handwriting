@@ -2,7 +2,9 @@
 
 A handwriting-first local notebook built with React, TypeScript, Vite, and Tiptap. Notes are stored in this browser; no account, API key, backend, or cloud service is needed.
 
-Live app: https://noteflow-handwriting.honeypuppy1.chatgpt.site
+Live app: https://sithum5433.github.io/noteflow-handwriting/
+
+Alternative host: https://noteflow-handwriting.honeypuppy1.chatgpt.site
 
 ## Run locally
 
@@ -21,7 +23,7 @@ Open the local URL printed in the terminal, normally http://127.0.0.1:5173.
 npm run build       # Type check and create dist/
 npm run preview     # Preview the production build
 npm run typecheck   # TypeScript checks
-npm test            # Storage, migration, validation, and import tests
+npm test            # Storage, migration, ink geometry, and PDF tests
 npm run test:e2e    # Browser interaction tests
 ```
 
@@ -31,9 +33,11 @@ Browser tests use an installed Google Chrome at `/usr/bin/google-chrome`. Set `C
 
 1. Choose **New note**. A ruled writing page opens with an automatic title; no keyboard is required.
 2. Write directly with your stylus. Pressure-sensitive ink saves automatically after each stroke.
-3. Use **Pen**, **Highlighter**, or **Erase**, and choose your ink color and width. Pen eraser buttons work when the browser reports them.
-4. Choose **Ruled**, **Grid**, **Dots**, or **Plain** paper. Use **Add more writing space** when you reach the bottom, or focus mode for more room.
-5. Use **Export PDF** to download an A4 PDF containing all handwriting and any typed notes. Long pages paginate automatically. PNG download and printing are also available. JSON backups preserve editable strokes and paper settings.
+3. Use **Pen**, **Highlighter**, or **Erase**. Each tool remembers its own size; use its number, slider, or −/+ buttons. Pen and highlighter also remember separate colors. Turn off **Pressure** for a uniform pen line. Pen eraser buttons work when the browser reports them.
+4. Choose **Stroke eraser** to remove whole lines, or **Point eraser** to remove only the part you touch. Undo and redo work with both modes, including after switching to Text and back.
+5. Zoom from **50% to 300%** with −/+ controls or Ctrl/⌘ + wheel over the page. **Fit** returns to the page width. Use **Hand**, hold **Space** while dragging on the page, or middle-drag to move around. Touch scrolls in Stylus + mouse mode. Zoom changes your view; saved handwriting and exports keep their original size.
+6. Choose **Ruled**, **Grid**, **Dots**, or **Plain** paper. Use **Add more writing space** when you reach the bottom, or focus mode for more room.
+7. Use **Export PDF** to download an A4 PDF containing all handwriting and any typed notes. Long pages paginate automatically. PNG download and printing are also available. JSON backups preserve editable strokes and paper settings.
 
 **Stylus + mouse** mode ignores finger marks and lets touch scroll the page. If your stylus behaves like a finger (for example, a passive capacitive stylus), select **Finger drawing**. Active pen pressure and eraser support depend on what your device and browser report.
 
@@ -43,7 +47,8 @@ You can tap **Rename note** or **Note details** when you want to change the auto
 
 - Create, reopen, edit, and duplicate notes with automatic saving and visible save status.
 - Rich text with headings, bold, italic, underline, strikethrough, ordered and bullet lists, interactive checklists, quotes, code blocks, links, dividers, and undo/redo.
-- Handwriting as the main editor, with smooth pressure-sensitive ink, palm input filtering, a highlighter, colors, pen sizes, stroke eraser, undo/redo, paper styles, extra writing space, and PNG downloads. Earlier sketches stay editable.
+- Handwriting as the main editor, with smooth pressure-sensitive ink, palm input filtering, separate persistent pen/highlighter/eraser sizes, whole-stroke and partial erasing, undo/redo, paper styles, extra writing space, and PNG downloads. Earlier sketches stay editable.
+- Anchored page zoom, fit-to-width, and a hand tool for panning. The writing workspace prevents browser context menus, dragging, and text selection from interrupting handwriting; normal text fields remain selectable.
 - Notebooks, tags, favorites, pinned notes, note colors, search across titles/content/tags/notebooks, and sorting.
 - Archive/unarchive, trash/restore, undo for moving notes, and confirmed permanent deletion.
 - Journal, meeting, and project templates.
@@ -70,17 +75,19 @@ A second tab receives saved changes when it has no pending edits. If the tabs co
 - `src/components/RichTextEditor.tsx`: Tiptap editor and formatting tools.
 - `src/components/SketchEditor.tsx`: stylus handwriting, pressure ink, paper, and drawing tools.
 - `src/lib/ink.ts`: ink formats, pressure paths, and legacy sketch migration.
+- `src/lib/inkErase.ts`: swept eraser geometry, line splitting, and pressure interpolation.
+- `src/lib/inkView.ts`: validated tool preferences and zoom calculations.
 - `src/lib/exportPdf.ts`: local PDF generation and page layout.
 - `src/components/InkPreview.tsx`: handwriting previews in the notes list.
 - `src/components/Dialog.tsx`: focus-managed dialogs.
 - `src/index.css` and `src/components/editors.css`: responsive light/dark styling.
-- `tests/workspace.spec.ts`, `tests/stylus.spec.ts`, and `tests/pdf.spec.ts`: browser interaction, simulated pen/touch, and downloaded PDF checks.
+- `tests/`: browser interaction, simulated pen/touch, zoom and partial-erasing regressions, navigation history, and downloaded PDF checks.
 
 ## Hosting
 
 The app builds to `dist/` and works on static hosting without a backend. Relative Vite asset paths support both a custom domain and a GitHub Pages project path.
 
-A GitHub Pages workflow is included in `.github/workflows/deploy-pages.yml`. After the public repository is created, choose **Settings → Pages → Source → GitHub Actions**. Pushes to `main` install the locked dependencies, run unit tests, build the app, and deploy `dist/`.
+A GitHub Pages workflow is included in `.github/workflows/deploy-pages.yml` and enabled for this repository. Pushes to `main` install the locked dependencies, run unit tests, build the app, and deploy `dist/`. For a fork, choose **Settings → Pages → Source → GitHub Actions**.
 
 Publishing this source does not publish notes. Notes are stored in each visitor's browser. Your local development notes remain on the local origin; export/import a JSON backup if you want to move them to the hosted app.
 

@@ -330,7 +330,6 @@ export default function App() {
       setSaveState("error");
       return;
     }
-    dirty.current = true;
     setSaveState("saving");
     const timer = setTimeout(persist, 450);
     return () => clearTimeout(timer);
@@ -430,6 +429,7 @@ export default function App() {
         setMenu(false);
     };
     const onEscape = (event: KeyboardEvent) => {
+      if (event.defaultPrevented) return;
       if (event.key === "Escape") {
         setMenu(false);
         setSidebarOpen(false);
@@ -984,7 +984,7 @@ export default function App() {
             >
               <Settings2 size={17} />
             </IconButton>
-            <span className="app-version">v1.0</span>
+            <span className="app-version">v1.1</span>
           </div>
         </div>
       </aside>
@@ -1583,21 +1583,14 @@ export default function App() {
                   id={tab === "text" ? "text-panel" : "sketch-panel"}
                   aria-labelledby={tab === "text" ? "text-tab" : "sketch-tab"}
                 >
-                  <Suspense
-                    fallback={
-                      <div className="editor-loading">Opening your note…</div>
-                    }
-                  >
-                    {tab === "text" ? (
-                      <RichTextEditor
-                        key={activeNote.id}
-                        content={activeNote.textContent}
-                        onChange={(html) =>
-                          updateNote(activeNote.id, { textContent: html })
-                        }
-                        readOnly={readOnly}
-                      />
-                    ) : (
+                  <div hidden={tab !== "sketch"}>
+                    <Suspense
+                      fallback={
+                        <div className="editor-loading">
+                          Opening your writing page…
+                        </div>
+                      }
+                    >
                       <SketchEditor
                         key={activeNote.id}
                         data={activeNote.sketchData}
@@ -1606,8 +1599,24 @@ export default function App() {
                         }
                         readOnly={readOnly}
                       />
-                    )}
-                  </Suspense>
+                    </Suspense>
+                  </div>
+                  {tab === "text" && (
+                    <Suspense
+                      fallback={
+                        <div className="editor-loading">Opening your note…</div>
+                      }
+                    >
+                      <RichTextEditor
+                        key={activeNote.id}
+                        content={activeNote.textContent}
+                        onChange={(html) =>
+                          updateNote(activeNote.id, { textContent: html })
+                        }
+                        readOnly={readOnly}
+                      />
+                    </Suspense>
+                  )}
                 </div>
               </div>
               <footer className="editor-footer">
@@ -1934,6 +1943,12 @@ export default function App() {
               A few shortcuts for a little more flow. Use ⌘ on Mac or Ctrl on
               Windows and Linux.
             </p>
+            <p className="dialog-description">
+              Use the page zoom controls to get closer, or choose Hand to move
+              around. Pen, highlighter, and eraser each remember their own size.
+              Choose Point eraser to remove part of a line, or Stroke eraser to
+              remove the whole line.
+            </p>
             <dl className="shortcut-list">
               <div>
                 <dt>Create a note</dt>
@@ -1961,6 +1976,32 @@ export default function App() {
                 <dd>
                   <kbd>Ctrl / ⌘</kbd>
                   <kbd>B / I / U</kbd>
+                </dd>
+              </div>
+              <div>
+                <dt>Pen / highlighter / eraser (on the page)</dt>
+                <dd>
+                  <kbd>P / H / E</kbd>
+                </dd>
+              </div>
+              <div>
+                <dt>Move the page (hold while dragging)</dt>
+                <dd>
+                  <kbd>Space</kbd>
+                </dd>
+              </div>
+              <div>
+                <dt>Zoom around the pointer (over the page)</dt>
+                <dd>
+                  <kbd>Ctrl / ⌘</kbd>
+                  <kbd>Wheel</kbd>
+                </dd>
+              </div>
+              <div>
+                <dt>Undo / redo handwriting (on the page)</dt>
+                <dd>
+                  <kbd>Ctrl / ⌘</kbd>
+                  <kbd>Z / Shift Z</kbd>
                 </dd>
               </div>
               <div>

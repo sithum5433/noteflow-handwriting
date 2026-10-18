@@ -165,13 +165,9 @@ test("sketch survives text editing, undo, redo, reload, and PNG export", async (
   const canvas = page.locator(".sketch-canvas");
   const box = await canvas.boundingBox();
   expect(box).not.toBeNull();
-  await page.mouse.move(box!.x + box!.width * 0.2, box!.y + box!.height * 0.3);
+  await page.mouse.move(box!.x + box!.width * 0.2, box!.y + 65);
   await page.mouse.down();
-  await page.mouse.move(
-    box!.x + box!.width * 0.7,
-    box!.y + box!.height * 0.65,
-    { steps: 15 },
-  );
+  await page.mouse.move(box!.x + box!.width * 0.7, box!.y + 125, { steps: 15 });
   await page.mouse.up();
   await expect(canvas.locator("path")).toHaveCount(1);
   await page.getByRole("button", { name: "Undo drawing", exact: true }).click();

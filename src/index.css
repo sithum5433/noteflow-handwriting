@@ -2527,6 +2527,7 @@ a {
 /* Handwritten pages are the main workspace; titles and metadata stay compact. */
 .editor-pane.is-handwriting .editor-body {
   padding: 14px 27px 0;
+  overflow: hidden;
 }
 .handwriting-note-heading {
   display: flex;
@@ -2623,9 +2624,22 @@ a {
   padding-bottom: 10px;
 }
 .editor-pane.is-handwriting .content-area {
-  flex: 1 0 auto;
-  min-height: 260px;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
   padding-top: 0;
+}
+.editor-pane.is-handwriting .content-area > div:not([hidden]) {
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  min-height: 0;
+}
+.editor-pane.is-handwriting .handwriting-note-heading,
+.editor-pane.is-handwriting .editor-tabs,
+.editor-pane.is-handwriting .note-details {
+  flex-shrink: 0;
 }
 .app-shell.is-focused .editor-pane.is-handwriting .editor-body {
   width: min(100%, 1100px);
